@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: cloudstudents
+  name: deployment-2048-alan
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: app-2048-alan
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: app-2048-alan
+    spec:
+      containers:
+      - image: 991524241826.dkr.ecr.ap-south-2.amazonaws.com/cloudstudents/alan-course:latest
+        imagePullPolicy: Always
+        name: app-2048-alan
+        ports:
+        - containerPort: 3001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: cloudstudents
+  name: service-2048-alan
+spec:
+  selector:
+    app.kubernetes.io/name: app-2048-alan
+  ports:
+    - port: 80         # Expose service on port 80
+      targetPort: 3001 # Forward traffic to container port 3001
+      protocol: TCP
+  type: NodePort
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: cloudstudents
+  name: ingress-2048-alan
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: service-2048-alan
+              port:
+                number: 80   # Ingress should point to Service port 80
