@@ -43,7 +43,7 @@ metadata:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/group.name: student-app
-    alb.ingress.kubernetes.io/healthcheck-path: alan-course/health
+    alb.ingress.kubernetes.io/healthcheck-path: /alan-course/health
 
 spec:
   ingressClassName: alb
