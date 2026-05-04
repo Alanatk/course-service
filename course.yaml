@@ -50,7 +50,7 @@ spec:
   rules:
     - http:
         paths:
-        - path: /alan-course/*
+        - path: /alan-course
           pathType: Prefix
           backend:
             service:
